@@ -1,5 +1,4 @@
 const express = require('express')
-const {engine} = require('express-handlebars')
 const path = require('path')
 const http = require('http')
 const socketio = require('socket.io')
@@ -16,11 +15,13 @@ app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
 
-app.get('/',(req,res)=> {
-    res.send()
-})
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  });
 
-app.set((req,res)=>{
+app.get("/test", (req, res) => {res.send({"test":"success"})});
+
+app.use((req,res)=>{
     res.status(404).send('<h1>Page not found</h1>')
 })
 
@@ -77,6 +78,4 @@ io.on('connection',(socket)=>{
 
 })
 
-server.listen(port,()=>{
-    console.log('server is running')
-})
+server.listen(port)
